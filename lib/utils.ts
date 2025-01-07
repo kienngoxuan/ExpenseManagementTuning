@@ -1,7 +1,27 @@
+export class StorageManager {
+  static setItem<T>(key: string, value: T): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error("Storage write error", error);
+    }
+  }
 
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+  static getItem<T>(key: string, defaultValue?: T): T | undefined {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+      console.error("Storage read error", error);
+      return defaultValue;
+    }
+  }
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  static removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+  static clear(): void {
+    localStorage.clear();
+  }
 }
